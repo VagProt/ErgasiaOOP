@@ -8,6 +8,9 @@ using namespace std;
 class car
 {
 
+    int seg_id;
+    bool is_ready;
+
     public:
 
 };

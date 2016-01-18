@@ -5,8 +5,12 @@
 
 using namespace std;
 
+class segment;
+
 class highway
 {
+    segment* Segs;
+    int no_cars;
 
     public:
 
