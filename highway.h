@@ -2,6 +2,7 @@
 #define _highway_h
 
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -9,7 +10,7 @@ class segment;
 
 class highway
 {
-    segment* Segs;
+    vector <segment*> Segs;
     int no_cars;
 
     public:
