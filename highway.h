@@ -18,6 +18,7 @@ class highway
     public:
         highway(int);
         ~highway();
+        void operate() const;
 
     private:
         vector <segment*> Segs;

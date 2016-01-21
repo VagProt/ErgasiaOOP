@@ -16,6 +16,12 @@ class segment
     public:
         segment(int, int, segment*, segment*);
         ~segment();
+        void set_next(segment*);
+        void set_prev(segment*);
+        void enter();
+        void exit();
+        void pass();
+        int get_no_of_vehicles() const;
 
     private:
         entry* point_of_entry;

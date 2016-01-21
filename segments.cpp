@@ -8,6 +8,7 @@
 
 using namespace std;
 
+
 string operator+(string const &a, int b)
 {
   ostringstream oss;
@@ -15,21 +16,18 @@ string operator+(string const &a, int b)
   return oss.str();
 }
 
-segment::segment(int cap, int index, segment* next, segment* prev):car_cap(cap), seg_index(index), next(next), prev(prev)
+segment::segment(int cap, int index, segment* next, segment* prev) : car_cap(cap), seg_index(index), next(next), prev(prev)
 {
     cout << "Segment " << index << " has been created" << endl;
 
-    int rand_int = rand()%max_tolls + 1;
-    point_of_entry = new entry("Entrance " + index, index, this, rand_int);
+    int rand_toll = rand() % max_tolls + 1;
+    point_of_entry = new entry("Entrance " + index, index, this, rand_toll);
 
-    rand_int = rand()%cap + 1;
-    car* temp;
-
-    for(int i=0; i<cap; i++)
+    for(int i=1; i<=cap; i++)
     {
-        temp = new car();
+        car *temp = new car();
         temp->set_seg_id(index);
-        temp->set_exit_id(rand()%(Nsegs-index)+index);
+        temp->set_exit_id(rand() % (Nsegs - index) + index);
 
         cars_in_seg.push_back(temp);
     }
@@ -38,4 +36,19 @@ segment::segment(int cap, int index, segment* next, segment* prev):car_cap(cap),
 segment::~segment()
 {
     cout << "Segment " << seg_index << " has been destroyed" << endl;
+}
+
+void segment::set_next(segment *nxt)
+{
+    next = nxt;
+}
+
+void segment::set_prev(segment *prv)
+{
+    prev = prv;
+}
+
+int segment::get_no_of_vehicles() const
+{
+    return cars_in_seg.size();
 }
