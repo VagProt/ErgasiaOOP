@@ -6,14 +6,22 @@
 
 using namespace std;
 
+extern int N, Nsegs, K, Percent;
+
 class segment;
+
+static const int min_capacity = 10;
+static const int max_capacity = 20;
 
 class highway
 {
-    vector <segment*> Segs;
-    int no_cars;
-
     public:
+        highway(int);
+        ~highway();
+
+    private:
+        vector <segment*> Segs;
+        int no_cars;
 
 };
 

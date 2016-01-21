@@ -11,19 +11,17 @@ class car;
 class segment;
 class entry;
 
-static const int rand_no = 5;
+//static const int rand_no = 5;
 
 class toll
 {
     //friend class entry;
 
     public:
-        toll(int, int);
+        toll(int);
         ~toll();
 
-        void add_to_queue(car*);
-        void add_to_seg();
-        void add_rand_cars(int, int);
+        void add_rand_cars(int);
 
     protected:
         queue <car*> cars_in_queue;
@@ -37,7 +35,7 @@ class e_toll: public toll
     public:
         static int e_max;
 
-        e_toll(int, int);
+        e_toll(int);
         ~e_toll();
 
     private:
@@ -49,7 +47,7 @@ class h_toll: public toll
     public:
         static int h_max;
 
-        h_toll(int, int);
+        h_toll(int);
         ~h_toll();
 
     private:
