@@ -20,14 +20,14 @@ class toll
     public:
         toll(int);
         ~toll();
-
         void add_rand_cars(int);
+        car* get_car() const;
+        void pop_car();
+        int get_size() const;
 
     protected:
         queue <car*> cars_in_queue;
-
         int ext_counter;
-
 };
 
 class e_toll: public toll

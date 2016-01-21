@@ -2,8 +2,14 @@
 #include "entry.h"
 #include "car.h"
 #include "highway.h"
+#include "segments.h"
 
 using namespace std;
+
+
+int h_toll::h_max = 0;
+int e_toll::e_max = 0;
+
 
 toll::toll(int curr_seg)
 {
@@ -46,14 +52,82 @@ void toll::add_rand_cars(int curr_seg)
         car *temp = new car();
         temp->set_seg_id(-1);
         temp->set_exit_id(rand() % (Nsegs - curr_seg) + curr_seg);
+        temp->set_if_ready(false);
 
         cars_in_queue.push(temp);
     }
 }
 
+car* toll::get_car() const
+{
+    return cars_in_queue.front();
+}
+
+void toll::pop_car()
+{
+    cars_in_queue.pop();
+}
+
+int toll::get_size() const
+{
+    return cars_in_queue.size();
+}
+
 void entry::operate()
 {
+    int pos = 0, h_entry_cnt = 0, e_entry_cnt = 0;
 
+    while(home->get_no_of_vehicles() < home->get_capacity())
+    {
+        if(h_entry_cnt < h_toll::h_max)
+        {
+            for(int i=0; i<h_toll_vector.size(); ++i)
+            {
+                if(h_toll_vector[i]->get_size())
+                {
+                    car *Car = h_toll_vector[i]->get_car();
+                    h_toll_vector[i]->pop_car();
+                    home->push_front_car(Car);
+
+                    ++h_entry_cnt;
+                }
+
+                if(home->get_no_of_vehicles() == home->get_capacity()  ||  h_entry_cnt == h_toll::h_max)
+                    break;
+            }
+        }
+        
+        if(e_entry_cnt < e_toll::e_max)
+        {
+            for(int i=0; i<e_toll_vector.size(); ++i)
+            {
+                if(e_toll_vector[i]->get_size())
+                {
+                    car *Car = e_toll_vector[i]->get_car();
+                    e_toll_vector[i]->pop_car();
+                    home->push_front_car(Car);
+                
+                    ++e_entry_cnt;
+                }
+
+                if(home->get_no_of_vehicles() == home->get_capacity()  ||  e_entry_cnt == e_toll::e_max)
+                    break;
+            }
+        }
+
+        if(h_entry_cnt == h_toll::h_max  &&  e_entry_cnt == e_toll::e_max)
+            break;
+    }
+
+    if(h_entry_cnt == h_toll::h_max)
+        ++h_toll::h_max;
+    else
+        --h_toll::h_max;
+
+    if(e_entry_cnt == e_toll::e_max)
+        ++e_toll::e_max;
+    else
+        --e_toll::e_max;
 }
 
 entry::entry(string n, int index, segment* p, int no_tolls) : name(n), seg_index(index), home(p)

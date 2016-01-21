@@ -22,6 +22,8 @@ class segment
         void exit();
         void pass();
         int get_no_of_vehicles() const;
+        int get_capacity() const;
+        void push_front_car(car*);
 
     private:
         entry* point_of_entry;

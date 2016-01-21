@@ -33,6 +33,9 @@ highway::highway(int no_segs)
     }
 }
 
+highway::~highway()
+{
+}
 
 void highway::operate() const
 {

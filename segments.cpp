@@ -1,5 +1,4 @@
 #include <string>
-#include <sstream>
 #include <cstdlib>
 #include "segments.h"
 #include "entry.h"
@@ -8,13 +7,6 @@
 
 using namespace std;
 
-
-string operator+(string const &a, int b)
-{
-  ostringstream oss;
-  oss << a << b;
-  return oss.str();
-}
 
 segment::segment(int cap, int index, segment* next, segment* prev) : car_cap(cap), seg_index(index), next(next), prev(prev)
 {
@@ -28,6 +20,7 @@ segment::segment(int cap, int index, segment* next, segment* prev) : car_cap(cap
         car *temp = new car();
         temp->set_seg_id(index);
         temp->set_exit_id(rand() % (Nsegs - index) + index);
+        temp->set_if_ready(false);
 
         cars_in_seg.push_back(temp);
     }
@@ -51,4 +44,14 @@ void segment::set_prev(segment *prv)
 int segment::get_no_of_vehicles() const
 {
     return cars_in_seg.size();
+}
+
+int segment::get_capacity() const
+{
+    return car_cap;
+}
+
+void segment::push_front_car(car *Car)
+{
+    cars_in_seg.push_front(Car);
 }
