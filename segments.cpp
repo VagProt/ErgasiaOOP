@@ -4,6 +4,7 @@
 #include "entry.h"
 #include "car.h"
 #include "highway.h"
+#include "myFunctions.h"
 
 using namespace std;
 
@@ -13,17 +14,22 @@ segment::segment(int cap, int index, segment* next, segment* prev) : car_cap(cap
     cout << "Segment " << index << " has been created" << endl;
 
     int rand_toll = rand() % max_tolls + 1;
-    point_of_entry = new entry("Entrance " + index, index, this, rand_toll);
+    string temp_name = "Entrance";
+    point_of_entry = new entry(temp_name, index, this, rand_toll);
 
-    for(int i=1; i<=cap; i++)
+    cout << "Adding cars to segment" << endl;
+
+    int rand_cap = rand() % cap + 1;
+    for(int i=0; i<rand_cap; i++)
     {
         car *temp = new car();
         temp->set_seg_id(index);
         temp->set_exit_id(rand() % (Nsegs - index) + index);
-        temp->set_if_ready(false);
 
         cars_in_seg.push_back(temp);
     }
+
+    cout << "Done adding cars to segment" << endl;
 }
 
 segment::~segment()
@@ -54,4 +60,55 @@ int segment::get_capacity() const
 void segment::push_front_car(car *Car)
 {
     cars_in_seg.push_front(Car);
+}
+
+void segment::enter()
+{
+    if(prev != NULL)
+    {
+        prev->pass();
+        point_of_entry->operate();
+    }
+}
+
+void segment::exit()
+{
+    for(list<car*>::iterator iter = cars_in_seg.begin(); iter != cars_in_seg.end(); iter++)
+    {
+        if(((*iter)->get_if_ready() == true) && ((*iter)->get_exit_id() == seg_index))
+        {
+            cout << "A car in segment " << seg_index << " is about to exit the highway" << endl;
+
+            delete (*iter);
+            iter-- = cars_in_seg.erase(iter);
+        }
+    }
+}
+
+void segment::pass()
+{
+    if(get_no_of_vehicles())
+        {
+            for(list<car*>::iterator iter = cars_in_seg.begin(); iter != cars_in_seg.end(); iter++)
+            {
+                if(next->get_no_of_vehicles() == next->car_cap)
+                {
+                    break;
+                }
+                else if(((*iter)->get_if_ready() == true) &&  ((*iter)->get_exit_id() > seg_index))
+                {
+                    cout << "A car is exiting segment " << seg_index << " and entering segment " << next->seg_index << endl;
+
+                    car* temp_car = *iter;
+                    iter-- = cars_in_seg.erase(iter);
+                    next->cars_in_seg.push_front(temp_car);
+                }
+            }
+        }
+}
+
+void segment::operate()
+{
+    exit();
+    enter();
 }

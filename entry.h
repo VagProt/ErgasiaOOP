@@ -11,7 +11,7 @@ class car;
 class segment;
 class entry;
 
-//static const int rand_no = 5;
+static const int max_cars = 5;
 
 class toll
 {
@@ -27,7 +27,6 @@ class toll
 
     protected:
         queue <car*> cars_in_queue;
-        int ext_counter;
 };
 
 class e_toll: public toll

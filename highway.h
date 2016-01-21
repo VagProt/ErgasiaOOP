@@ -16,7 +16,7 @@ static const int max_capacity = 20;
 class highway
 {
     public:
-        highway(int);
+        highway(int, int);
         ~highway();
         void operate() const;
 

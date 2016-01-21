@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstdlib>
+#include <ctime>
 #include "car.h"
 #include "entry.h"
 #include "segments.h"
@@ -22,15 +23,16 @@ int main(int argc, char* argv[])
         Percent = string_to_int(argv[4]);
     }
     else
-        cout << "5 arguments required!" << endl;
+        cout << "4 arguments required!" << endl;
 
+    srand(time(NULL));
 
-    highway attiki_odos(Nsegs);
+    highway attiki_odos(Nsegs, K);
 
     while(N--)
     {
-        
+
     }
-    
+
     return 0;
 }
