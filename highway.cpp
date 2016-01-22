@@ -27,7 +27,7 @@ highway::highway(int no_segs, int K)
         Segs[no_segs-1]->set_prev(Segs[no_segs-2]);
     }
 
-    for(int i=1; i<no_segs - 1; i++)
+    for(int i=1; i<no_segs-1; i++)
     {
         Segs[i]->set_next(Segs[i+1]);
         Segs[i]->set_prev(Segs[i-1]);

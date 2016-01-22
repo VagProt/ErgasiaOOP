@@ -140,7 +140,7 @@ void entry::operate()
             }
         }
 
-        if((h_entry_cnt == h_toll::h_max  &&  e_entry_cnt == e_toll::e_max) || (h_flag == false && e_flag == false))
+        if((h_entry_cnt == h_toll::h_max  &&  e_entry_cnt == e_toll::e_max)  ||  (!h_flag  &&  !e_flag))
             break;
     }
 
@@ -155,12 +155,8 @@ void entry::operate()
         --e_toll::e_max;
 
     for(int i=0; i<h_toll_vector.size(); i++)
-    {
         h_toll_vector[i]->add_rand_cars(seg_index);
-    }
 
     for(int i=0; i<e_toll_vector.size(); i++)
-    {
         e_toll_vector[i]->add_rand_cars(seg_index);
-    }
 }

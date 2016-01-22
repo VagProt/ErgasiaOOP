@@ -6,7 +6,6 @@
 
 using namespace std;
 
-extern int N, Nsegs, K, Percent;
 
 class segment;
 

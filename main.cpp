@@ -24,14 +24,14 @@ int main(int argc, char* argv[])
     }
     else
         cout << "4 arguments required!" << endl;
-
+    
     srand(time(NULL));
 
     highway attiki_odos(Nsegs + 1, K);
 
     while(N--)
     {
-
+        attiki_odos.operate();        
     }
 
     return 0;

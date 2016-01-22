@@ -9,6 +9,7 @@ using namespace std;
 class entry;
 class car;
 
+extern int Nsegs;
 static const int max_tolls = 10;
 
 class segment
