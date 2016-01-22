@@ -103,14 +103,13 @@ void segment::pass()
         }
 
         else
-            ++itr;
+            ++iter;
     }
 }
 
 void segment::set_ready()
 {
-    vector <int> used_indexes(cars_in_seg.size());
-    fill(used_indexes.begin(), used_indexes.end(), 0);
+    vector <int> used_indexes(cars_in_seg.size(), 0);
     int list_size = cars_in_seg.size();
 
     int rand_index = rand()% list_size;
