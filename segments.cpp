@@ -109,16 +109,18 @@ void segment::pass()
 
 void segment::set_ready()
 {
-    vector <int> used_indexes(cars_in_seg.size(), 0);
-    int list_size = cars_in_seg.size();
+    int len = cars_in_seg.size();
+    int rand_index, perc = len * (Percent / 100);
+    vector <bool> used_indexes(len, false);
 
-    int rand_index = rand()% list_size;
-    for(int i=0; i<cars_in_seg.size(); i++)
+    for(int i=1; i<=perc; i++)
     {
-        while(used_indexes[rand_index] == 1)
-            rand_index = rand() % list_size;
+        do
+        {
+            rand_index = rand() % len;
+        }while(used_indexes[rand_index]);
 
-        used_indexes[rand_index] = 1;
+        used_indexes[rand_index] = true;
 
         for(list<car*>::iterator iter = cars_in_seg.begin(); iter != cars_in_seg.end(); iter++, rand_index--)
             if(rand_index == 0)
@@ -126,8 +128,6 @@ void segment::set_ready()
                  (*iter)->set_if_ready(true);
                  break;
             }
-
-        rand_index = rand() % list_size;
     }
 
 }
