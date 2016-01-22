@@ -86,21 +86,24 @@ void segment::exit()
 
 void segment::pass()
 {
-    for(list<car*>::iterator iter = cars_in_seg.begin(); iter != cars_in_seg.end(); iter++)
+    for(list<car*>::iterator iter = cars_in_seg.begin(); iter != cars_in_seg.end();)
     {
         if(next->get_no_of_vehicles() == next->car_cap)
             break;
             
-        else if((*iter)->get_if_ready()  &&  ((*iter)->get_exit_id() > seg_index))
+        if((*iter)->get_if_ready()  &&  ((*iter)->get_exit_id() > seg_index))
         {
             cout << "A car is exiting segment " << seg_index << " and entering segment " << next->seg_index << endl;
 
             car* temp_car = *iter;
-            iter-- = cars_in_seg.erase(iter);
+            cars_in_seg.erase(iter++);
             temp_car->set_if_ready(false);
             temp_car->set_seg_id(seg_index + 1);
             next->cars_in_seg.push_front(temp_car);
         }
+
+        else
+            ++itr;
     }
 }
 
