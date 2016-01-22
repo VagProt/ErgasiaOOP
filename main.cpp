@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
 
     srand(time(NULL));
 
-    highway attiki_odos(Nsegs, K);
+    highway attiki_odos(Nsegs + 1, K);
 
     while(N--)
     {

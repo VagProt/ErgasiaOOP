@@ -5,7 +5,7 @@
 using namespace std;
 
 
-int string_to_int(char *str) 
+int string_to_int(char *str)
 {
     int ret = 0;
 
@@ -18,10 +18,9 @@ int string_to_int(char *str)
     return ret;
 }
 
-
-string operator+(const string &a, int b)
+string int_to_string(int a)
 {
-    ostringstream oss;
-    oss << a << b;
-    return oss.str();
+    stringstream ss;
+    ss << a;
+    return ss.str();
 }

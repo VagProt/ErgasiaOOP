@@ -9,9 +9,26 @@ using namespace std;
 
 class car;
 class segment;
-class entry;
+class toll;
 
 static const int max_cars = 5;
+
+class entry
+{
+    public:
+        entry(string, int, segment*, int);
+        ~entry();
+
+        void operate();
+
+    private:
+        string name;
+        vector <toll*> h_toll_vector;
+        vector <toll*> e_toll_vector;
+
+        int seg_index;
+        segment* home;
+};
 
 class toll
 {
@@ -51,23 +68,6 @@ class h_toll: public toll
 
     private:
 
-};
-
-class entry
-{
-    public:
-        entry(string, int, segment*, int);
-        ~entry();
-
-        void operate();
-
-    private:
-        string name;
-        vector <toll*> h_toll_vector;
-        vector <toll*> e_toll_vector;
-
-        int seg_index;
-        segment* home;
 };
 
 #endif // _entry_h

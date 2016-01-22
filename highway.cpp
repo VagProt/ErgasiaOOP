@@ -24,10 +24,10 @@ highway::highway(int no_segs, int K)
     if(no_segs >= 2)
     {
         Segs[0]->set_next(Segs[1]);
-        Segs[no_segs-1]->set_prev(Segs[no_segs-1]);
+        Segs[no_segs-1]->set_prev(Segs[no_segs-2]);
     }
 
-    for(int i=1; i<no_segs; ++i)
+    for(int i=1; i<no_segs - 1; i++)
     {
         Segs[i]->set_next(Segs[i+1]);
         Segs[i]->set_prev(Segs[i-1]);

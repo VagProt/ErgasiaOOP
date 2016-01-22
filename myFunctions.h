@@ -5,6 +5,6 @@
 using namespace std;
 
 int string_to_int(char *);
-string operator+(const string&, int);
+string int_to_string(int a);
 
 #endif // _myFunctions_h

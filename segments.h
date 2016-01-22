@@ -22,6 +22,8 @@ class segment
         void pass();
         void operate();
 
+        void set_ready();
+
         int get_no_of_vehicles() const;
         int get_capacity() const;
 
