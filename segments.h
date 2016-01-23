@@ -10,12 +10,12 @@ class entry;
 class car;
 
 extern int Nsegs, Percent;
-static const int max_tolls = 10;
+const int max_tolls = 10;
 
 class segment
 {
     public:
-        segment(int, int, segment*, segment*);
+        segment(int, int, segment*, segment*, int&);
         ~segment();
 
         void enter();

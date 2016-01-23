@@ -11,7 +11,7 @@ class car;
 class segment;
 class toll;
 
-static const int max_cars = 5;
+const int max_cars = 5;
 
 class entry
 {

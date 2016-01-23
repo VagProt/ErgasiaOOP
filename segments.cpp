@@ -8,7 +8,7 @@
 
 using namespace std;
 
-segment::segment(int cap, int index, segment* next, segment* prev) : car_cap(cap), seg_index(index), next(next), prev(prev)
+segment::segment(int cap, int index, segment* next, segment* prev, int &cnt_cars) : car_cap(cap), seg_index(index), next(next), prev(prev)
 {
     cout << "Segment " << index << " has been created" << endl;
 
@@ -27,7 +27,8 @@ segment::segment(int cap, int index, segment* next, segment* prev) : car_cap(cap
 
         cars_in_seg.push_back(temp);
     }
-
+    
+    cnt_cars += rand_cap;
     cout << "Done adding cars to segment" << endl;
 }
 

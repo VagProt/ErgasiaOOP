@@ -12,11 +12,12 @@ highway::highway(int no_segs, int K)
 
     int rand_cap;
     segment* seg;
+    no_cars = 0;
 
     for(int i=0; i<no_segs; i++)
     {
         rand_cap = rand() % (max_capacity - min_capacity + 1) + min_capacity;
-        seg = new segment(rand_cap, i, NULL, NULL);
+        seg = new segment(rand_cap, i, NULL, NULL, no_cars);
 
         Segs.push_back(seg);
     }
@@ -42,10 +43,20 @@ highway::~highway()
     cout << "A highway has been destroyed" << endl;
 }
 
-void highway::operate() const
+void highway::operate()
 {
-    cout << "There are in the highway " << no_cars << " cars.\n";
-    
+    no_cars = 0;
+ 
     for(int i=Nsegs; i>=0; --i)
+    {
         Segs[i]->operate();
+        no_cars += Segs[i]->get_no_of_vehicles();
+    }
+    
+    cout << "There are in the highway " << no_cars << " cars\n";
+}
+
+int highway::get_no_of_vehicles() const
+{
+    return no_cars;
 }
