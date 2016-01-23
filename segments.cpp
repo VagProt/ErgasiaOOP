@@ -72,15 +72,18 @@ void segment::enter()
 
 void segment::exit()
 {
-    for(list<car*>::iterator iter = cars_in_seg.begin(); iter != cars_in_seg.end(); iter++)
+    for(list<car*>::iterator iter = cars_in_seg.begin(); iter != cars_in_seg.end();)
     {
-        if(((*iter)->get_if_ready() == true) && ((*iter)->get_exit_id() == seg_index))
+        if((*iter)->get_if_ready()  &&  (*iter)->get_exit_id() == seg_index)
         {
             cout << "A car in segment " << seg_index << " is about to exit the highway" << endl;
 
             delete (*iter);
-            iter-- = cars_in_seg.erase(iter);
+            cars_in_seg.erase(iter++);
         }
+        
+        else
+            ++iter;
     }
 }
 
