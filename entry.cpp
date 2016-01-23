@@ -3,6 +3,7 @@
 #include "car.h"
 #include "highway.h"
 #include "segments.h"
+#include "myFunctions.h"
 
 using namespace std;
 
@@ -13,7 +14,7 @@ int e_toll::e_max = 0;
 
 entry::entry(string n, int index, segment* p, int no_tolls) : name(n), seg_index(index), home(p)
 {
-    cout << "Entry with name " << n << " has been created" << endl;
+    logfile << "Entry with name " << n << " has been created" << endl;
 
     toll* temp;
 
@@ -30,41 +31,64 @@ entry::entry(string n, int index, segment* p, int no_tolls) : name(n), seg_index
     }
 }
 
+entry::~entry()
+{
+    for(int i=0; i<h_toll_vector.size(); i++)
+    {
+        delete h_toll_vector[i];
+    }
+
+    for(int i=0; i<e_toll_vector.size(); i++)
+    {
+        delete e_toll_vector[i];
+    }
+
+    logfile << "Entry with name " << name << " has been deleted" << endl;
+}
+
 toll::toll(int curr_seg)
 {
-    cout << "A toll has been created" << endl;
+    logfile << "A toll has been created" << endl;
 
     add_rand_cars(curr_seg);
 }
 
 toll::~toll()
 {
-    cout << "A toll has been destroyed" << endl;
+    car* tempCar;
+    for(int i=0; i<cars_in_queue.size(); i++)
+    {
+        tempCar = cars_in_queue.front();
+        delete tempCar;
+        cars_in_queue.pop();
+    }
+
+    logfile << "A toll has been destroyed" << endl;
 }
 
 h_toll::h_toll(int curr_seg): toll(curr_seg)
 {
-    cout << "An h-toll has been created" << endl;
+    logfile << "An h-toll has been created" << endl;
 }
 
 h_toll::~h_toll()
 {
-    cout << "An h-toll has been destroyed" << endl;
+    logfile << "An h-toll has been destroyed" << endl;
 }
 
 e_toll::e_toll(int curr_seg): toll(curr_seg)
 {
-    cout << "An e-toll has been created" << endl;
+    logfile << "An e-toll has been created" << endl;
 }
 
 e_toll::~e_toll()
 {
-    cout << "An e-toll has been destroyed" << endl;
+    logfile << "An e-toll has been destroyed" << endl;
 }
 
 void toll::add_rand_cars(int curr_seg)
 {
-    cout << "Adding cars to toll" << endl;
+    logfile << "Adding cars to toll" << endl;
 
     int no_of_cars = rand()%max_cars + 1;
 
@@ -95,8 +119,10 @@ int toll::get_size() const
 
 void entry::operate()
 {
-    int pos = 0, h_entry_cnt = 0, e_entry_cnt = 0;
-    bool h_flag, e_flag;
+    int h_entry_cnt = 0, e_entry_cnt = 0;
+    bool h_flag, e_flag, ext_t1 = false, ext_t2 = false;
+
+    outputfile << "Tolls of " << name << " are operating" << endl;
 
     while(home->get_no_of_vehicles() < home->get_capacity())
     {
@@ -115,6 +141,7 @@ void entry::operate()
 
                     ++h_entry_cnt;
                     h_flag = true;
+                    outputfile << "A car from h_toll " << i << " has just entered the highway" << endl;
                 }
 
                 if(home->get_no_of_vehicles() == home->get_capacity()  ||  h_entry_cnt == h_toll::h_max)
@@ -135,6 +162,7 @@ void entry::operate()
 
                     ++e_entry_cnt;
                     e_flag = true;
+                    outputfile << "A car from e_toll " << i << " has just entered the highway" << endl;
                 }
 
                 if(home->get_no_of_vehicles() == home->get_capacity()  ||  e_entry_cnt == e_toll::e_max)
@@ -142,9 +170,23 @@ void entry::operate()
             }
         }
 
-        if((h_entry_cnt == h_toll::h_max  &&  e_entry_cnt == e_toll::e_max)  ||  (!h_flag  &&  !e_flag))
+        if(!h_flag  &&  !e_flag)
+        {
+            outputfile << "Tolls of " << name << " are empty" << endl;
+            ext_t1 = true;
             break;
+        }
+        else if(h_entry_cnt == h_toll::h_max  &&  e_entry_cnt == e_toll::e_max)
+        {
+            outputfile << "Maximum number of cars allowed through the tolls of " << name << " reached" << endl;
+            ext_t2 = true;
+            break;
+        }
+
     }
+
+    if(!ext_t1 && !ext_t2)
+        outputfile << "Ka8usterhseis sthn eisodo tou komvou " << seg_index << endl;
 
     if(h_entry_cnt == h_toll::h_max)
         ++h_toll::h_max;
@@ -155,6 +197,8 @@ void entry::operate()
         ++e_toll::e_max;
     else
         --e_toll::e_max;
+
+    outputfile << "Cars are approaching the tolls of " << name << endl;
 
     for(int i=0; i<h_toll_vector.size(); i++)
         h_toll_vector[i]->add_rand_cars(seg_index);

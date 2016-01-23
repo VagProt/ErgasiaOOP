@@ -10,13 +10,18 @@ using namespace std;
 
 segment::segment(int cap, int index, segment* next, segment* prev, int &cnt_cars) : car_cap(cap), seg_index(index), next(next), prev(prev)
 {
-    cout << "Segment " << index << " has been created" << endl;
+    logfile << "Segment " << index << " has been created" << endl;
 
-    int rand_toll = rand() % max_tolls + 1;
-    string temp_name = "Entrance " + int_to_string(index);
-    point_of_entry = new entry(temp_name, index, this, rand_toll);
+    if(index != Nsegs)
+    {
+        int rand_toll = rand() % max_tolls + 1;
+        string temp_name = "Entrance " + int_to_string(index);
+        point_of_entry = new entry(temp_name, index, this, rand_toll);
+    }
+    else
+        point_of_entry = NULL;
 
-    cout << "Adding cars to segment" << endl;
+    logfile << "Adding cars to segment" << endl;
 
     int rand_cap = rand() % cap + 1;
     for(int i=0; i<rand_cap; i++)
@@ -27,14 +32,24 @@ segment::segment(int cap, int index, segment* next, segment* prev, int &cnt_cars
 
         cars_in_seg.push_back(temp);
     }
-    
+
     cnt_cars += rand_cap;
-    cout << "Done adding cars to segment" << endl;
+    logfile << "Done adding cars to segment" << endl;
 }
 
 segment::~segment()
 {
-    cout << "Segment " << seg_index << " has been destroyed" << endl;
+    car* tempCar;
+    for(int i=0; i<cars_in_seg.size(); i++)
+    {
+        tempCar = cars_in_seg.front();
+        delete tempCar;
+        cars_in_seg.pop_front();
+    }
+
+    delete point_of_entry;
+
+    logfile << "Segment " << seg_index << " has been destroyed" << endl;
 }
 
 void segment::set_next(segment *nxt)
@@ -67,7 +82,10 @@ void segment::enter()
     if(prev != NULL)
         prev->pass();
 
-    point_of_entry->operate();
+    if(point_of_entry != NULL)
+    {
+        point_of_entry->operate();
+    }
 }
 
 void segment::exit()
@@ -76,12 +94,12 @@ void segment::exit()
     {
         if((*iter)->get_if_ready()  &&  ((*iter)->get_exit_id() == seg_index  ||  seg_index == Nsegs))
         {
-            cout << "A car in segment " << seg_index << " is about to exit the highway" << endl;
-            
+            outputfile << "A car in segment " << seg_index << " is about to exit the highway" << endl;
+
             delete (*iter);
             cars_in_seg.erase(iter++);
         }
-        
+
         else
             ++iter;
     }
@@ -93,10 +111,10 @@ void segment::pass()
     {
         if(next->get_no_of_vehicles() == next->car_cap)
             break;
-            
+
         if((*iter)->get_if_ready()  &&  ((*iter)->get_exit_id() > seg_index))
         {
-            cout << "A car is exiting segment " << seg_index << " and entering segment " << next->seg_index << endl;
+            outputfile << "A car is exiting segment " << seg_index << " and entering segment " << next->seg_index << endl;
 
             car* temp_car = *iter;
             cars_in_seg.erase(iter++);
@@ -115,7 +133,7 @@ void segment::set_ready()
     int len = cars_in_seg.size();
     int rand_index, perc = len * ((double)Percent / 100.0);
     vector <bool> used_indexes(len, false);
-    
+
     for(int i=1; i<=perc; i++)
     {
         do
@@ -137,7 +155,7 @@ void segment::set_ready()
 
 void segment::operate()
 {
-    cout << "Segment " << seg_index << " is operating" << endl;
+    outputfile << "Segment " << seg_index << " is operating" << endl;
     exit();
     enter();
     set_ready();

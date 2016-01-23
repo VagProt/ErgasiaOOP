@@ -2,22 +2,25 @@
 #include "highway.h"
 #include "segments.h"
 #include "entry.h"
+#include "myFunctions.h"
 
 using namespace std;
 
 
-highway::highway(int no_segs, int K)
+highway::highway(int no_segs, int K): no_cars(0)
 {
-    cout << "A highway has been created" << endl;
+    logfile << "A highway has been created" << endl;
 
-    int rand_cap;
+    int cap;
     segment* seg;
-    no_cars = 0;
 
     for(int i=0; i<no_segs; i++)
     {
-        rand_cap = rand() % (max_capacity - min_capacity + 1) + min_capacity;
-        seg = new segment(rand_cap, i, NULL, NULL, no_cars);
+        cout << "Capacity of cars for segment " << i << " : ";
+        cin >> cap;
+        cout << endl;
+
+        seg = new segment(cap, i, NULL, NULL, no_cars);
 
         Segs.push_back(seg);
     }
@@ -40,20 +43,26 @@ highway::highway(int no_segs, int K)
 
 highway::~highway()
 {
-    cout << "A highway has been destroyed" << endl;
+    for(int i=0; i<Segs.size(); i++)
+    {
+        delete Segs[i];
+    }
+
+    logfile << "A highway has been destroyed" << endl;
 }
 
 void highway::operate()
 {
+    outputfile << "Highway is operating" << endl;
     no_cars = 0;
- 
+
     for(int i=Nsegs; i>=0; --i)
-    {    
+    {
         Segs[i]->operate();
         no_cars += Segs[i]->get_no_of_vehicles();
     }
-    
-    cout << "There are in the highway " << no_cars << " cars\n";
+
+    outputfile << "There are " << no_cars << " cars in the highway" << endl;
 }
 
 int highway::get_no_of_vehicles() const

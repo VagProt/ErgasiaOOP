@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <cstdlib>
 #include <ctime>
 #include "car.h"
@@ -11,13 +12,15 @@ using namespace std;
 
 
 int N, Nsegs, K, Percent;
-
+ofstream logfile;
+ofstream outputfile;
 
 int main(int argc, char* argv[])
 {
     srand(time(NULL));
-    
-    
+    logfile.open("log.txt");
+    outputfile.open("output.txt");
+
     if(argc == 5)
     {
         N = string_to_int(argv[1]);
@@ -27,16 +30,27 @@ int main(int argc, char* argv[])
     }
     else
         cout << "4 arguments required!" << endl;
-    
-    
-    highway attiki_odos(Nsegs + 1, K);
-    
-    
-    cout << "There are in the highway " << attiki_odos.get_no_of_vehicles() << " cars\n";
-    
-    while(N--)
-        attiki_odos.operate();        
 
+
+    highway attiki_odos(Nsegs + 1, K);
+
+
+    outputfile << "There are " << attiki_odos.get_no_of_vehicles() << " cars in the highway" << endl;
+
+    int sim_counter = 1;
+    while(N--)
+    {
+        outputfile << "On simulation " << sim_counter << " :" << endl;
+        attiki_odos.operate();
+        sim_counter++;
+    }
+
+
+    //outputfile.close();
+    //logfile.close();
+
+    cout << "Operation of highway finished successfully" <<endl;
+    cout << "See output.txt and log.txt for further information" << endl;
 
     return 0;
 }

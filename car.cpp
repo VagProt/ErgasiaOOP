@@ -1,15 +1,16 @@
 #include "car.h"
+#include "myFunctions.h"
 
 using namespace std;
 
 car::car():is_ready(false)
 {
-    cout << "A car has been created" << endl;
+    logfile << "A car has been created" << endl;
 }
 
 car::~car()
 {
-    cout << "Car in segment " << seg_id << " with exit segment " << exit_id << " has been destroyed" << endl;
+    logfile << "Car in segment " << seg_id << " with exit segment " << exit_id << " has been destroyed" << endl;
 }
 
 void car::set_exit_id(int ext)
