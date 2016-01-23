@@ -48,7 +48,7 @@ void highway::operate()
     no_cars = 0;
  
     for(int i=Nsegs; i>=0; --i)
-    {
+    {    
         Segs[i]->operate();
         no_cars += Segs[i]->get_no_of_vehicles();
     }

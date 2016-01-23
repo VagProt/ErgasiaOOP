@@ -77,7 +77,7 @@ void segment::exit()
         if((*iter)->get_if_ready()  &&  ((*iter)->get_exit_id() == seg_index  ||  seg_index == Nsegs))
         {
             cout << "A car in segment " << seg_index << " is about to exit the highway" << endl;
-
+            
             delete (*iter);
             cars_in_seg.erase(iter++);
         }
@@ -113,9 +113,9 @@ void segment::pass()
 void segment::set_ready()
 {
     int len = cars_in_seg.size();
-    int rand_index, perc = len * (Percent / 100);
+    int rand_index, perc = len * ((double)Percent / 100.0);
     vector <bool> used_indexes(len, false);
-
+    
     for(int i=1; i<=perc; i++)
     {
         do

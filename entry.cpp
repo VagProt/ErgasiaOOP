@@ -96,10 +96,12 @@ int toll::get_size() const
 void entry::operate()
 {
     int pos = 0, h_entry_cnt = 0, e_entry_cnt = 0;
-    bool h_flag = false, e_flag = false;
+    bool h_flag, e_flag;
 
     while(home->get_no_of_vehicles() < home->get_capacity())
     {
+        h_flag = e_flag = false;
+
         if(h_entry_cnt < h_toll::h_max)
         {
             for(int i=0; i<h_toll_vector.size(); ++i)

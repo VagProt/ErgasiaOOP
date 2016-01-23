@@ -9,7 +9,7 @@ car::car():is_ready(false)
 
 car::~car()
 {
-    cout << "Car in segment " << seg_id << " with exit segment " << exit_id << "has been destroyed" << endl;
+    cout << "Car in segment " << seg_id << " with exit segment " << exit_id << " has been destroyed" << endl;
 }
 
 void car::set_exit_id(int ext)
