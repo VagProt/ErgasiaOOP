@@ -64,17 +64,16 @@ void segment::push_front_car(car *Car)
 void segment::enter()
 {
     if(prev != NULL)
-    {
         prev->pass();
-        point_of_entry->operate();
-    }
+
+    point_of_entry->operate();
 }
 
 void segment::exit()
 {
     for(list<car*>::iterator iter = cars_in_seg.begin(); iter != cars_in_seg.end();)
     {
-        if((*iter)->get_if_ready()  &&  (*iter)->get_exit_id() == seg_index)
+        if((*iter)->get_if_ready()  &&  ((*iter)->get_exit_id() == seg_index  ||  seg_index == Nsegs))
         {
             cout << "A car in segment " << seg_index << " is about to exit the highway" << endl;
 
