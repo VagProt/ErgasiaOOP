@@ -45,4 +45,7 @@ highway::~highway()
 void highway::operate() const
 {
     cout << "There are in the highway " << no_cars << " cars.\n";
+    
+    for(int i=Nsegs; i>=0; --i)
+        Segs[i]->operate();
 }
